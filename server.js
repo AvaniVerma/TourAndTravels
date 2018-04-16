@@ -10,6 +10,7 @@ app.use(express.urlencoded({extended: true}))
 app.use('/', express.static( __dirname +  '/public_static'))
 
 app.use('/user', userRoute)
+app.use('/employee', employeeRoute)
 
 // Server Running
 app.listen(3000, function(req,res,next){

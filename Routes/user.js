@@ -52,6 +52,12 @@ route.post('/payment', function(req,res){
     payment.card_no=req.body.card_no.toString().trim()
     if(payment.card_no.length !=16)
         res.send("Enter valid card number")
+
+    payment.cvc_no=req.body.cvc_no.toString().trim()
+    if(payment.cvc_no.length != 3)
+        res.send("Enter valid cvc number")
+
+    //For both of the above check if the input is number only and not alphanumeric
     
     res.send("Amount paid successfully")
 })
