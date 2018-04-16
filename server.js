@@ -11,8 +11,6 @@ app.use('/', express.static( __dirname +  '/public_static'))
 
 app.use('/user', userRoute)
 
-
-
 // Server Running
 app.listen(3000, function(req,res,next){
     console.log("Server up and running")
