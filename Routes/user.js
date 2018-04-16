@@ -9,6 +9,8 @@ var Trip={  day : {
                     year: today.getFullYear()
 }};
 
+var payment={}
+
 
 
 // Add new booking details
@@ -17,7 +19,7 @@ route.post('/booking', function (req, res) {
     Trip.destination = req.body.dest
     Trip.duration = req.body.days
     Trip.package = req.body.package
-    
+
     switch(parseInt(req.body.travelVia))
     {
         case 1: Trip.travelMode="Airplane"
@@ -26,21 +28,43 @@ route.post('/booking', function (req, res) {
             break;
         case 3: Trip.travelMode="Bus"
     }
-    
-    // Add a check to see duration >=4
-    // if(Trip.duration<4)
-    // add error message to some div on screen
+
+    if(Trip.duration<4)
+        res.send("Trip must be longer than 3 days.")
 
     // Check entered date is atleast 2 days later than current
 
-    console.log(Trip)
     res.send("Got the request")
 })
 
 
-route.get('/bookingHistory', function (req,res){
 
+
+// Payment
+route.post('/payment', function(req,res){
+    switch(parseInt(req.body.card_type))
+    {
+        case 1: payment.card_type="credit"
+            break
+        case 2: payment.card_type="debit"
+    }
+
+    payment.card_no=req.body.card_no.toString().trim()
+    if(payment.card_no.length !=16)
+        res.send("Enter valid card number")
+    
+    res.send("Amount paid successfully")
 })
+
+
+
+
+
+//Show list of previously booked trips
+route.get('/bookingHistory', function (req,res){
+})
+
+
 
 
 //Exporting route
