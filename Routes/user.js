@@ -12,6 +12,53 @@ var Trip={  day : {
 var payment={}
 
 
+//LoginDetails
+route.post('/login', function(req,res){
+    var username = req.body.username
+    var password = req.body.password
+
+    //if username is not found in user DB, flash error message
+    //if username and password do not match, flash error message
+
+})
+
+
+
+//SignUp method
+route.post('/signUp',function(req,res){
+    var uName = req.body.username
+    var fName = req.body.first_name
+    var lName = req.body.last_name
+    var email = req.body.email
+    // var DOB = 
+    var gender;
+    switch( parseInt(req.body.gender.toString().trim()) )
+    {
+        case 1 : gender = "Male"
+            break
+        case 2 : gender = "Female"
+            break
+        case 3 : gender = "Other"
+            break
+        case 4 : gender = "Would rather not say"
+    }
+    var role = "user";
+
+    
+    
+
+    // Use flash messages to display error
+    // constraints
+    if(fName.trim()<3) res.send("Enter a valid first name")
+    if(lName.trim()<5) res.send("Enter a valid last name")
+
+
+
+    
+})
+
+
+
 
 // Add new booking details
 route.post('/booking', function (req, res) {
@@ -49,16 +96,14 @@ route.post('/payment', function(req,res){
         case 2: payment.card_type="debit"
     }
 
-    payment.card_no=req.body.card_no.toString().trim()
-    if(payment.card_no.length !=16)
-        res.send("Enter valid card number")
+    payment.card_no=req.body.card_no
+    if((payment.card_no != parseInt(payment.card_no)) || (payment.card_no.toString().trim().length != 16 ))
+        res.send("Enter a valid card number")
 
-    payment.cvc_no=req.body.cvc_no.toString().trim()
-    if(payment.cvc_no.length != 3)
+    payment.cvc_no=req.body.cvc_no
+    if((payment.cvc_no != parseInt(payment.cvc_no)) || (payment.cvc_no.toString().trim().length != 3))
         res.send("Enter valid cvc number")
 
-    //For both of the above check if the input is number only and not alphanumeric
-    
     res.send("Amount paid successfully")
 })
 
@@ -70,7 +115,7 @@ route.post('/payment', function(req,res){
 route.get('/bookingHistory', function (req,res){
 })
 
-
+// Add sessions and sign out option  
 
 
 //Exporting route
