@@ -1,6 +1,6 @@
 const express = require('express');
 const route = express.Router();
-const userDB = require('../database/user')
+const userDB = require('../MySQL_scripts/user')
 
 //Trip details
 var today=new Date();
@@ -32,7 +32,6 @@ route.post('/signUp',function(req,res){
     var fName = req.body.first_name
     var lName = req.body.last_name
     var email = req.body.email
-    // var DOB = 
     var gender;
     switch( parseInt(req.body.gender.toString().trim()) )
     {
@@ -45,27 +44,37 @@ route.post('/signUp',function(req,res){
         case 4 : gender = "Would rather not say"
     }
 
-    // Use flash messages to display error
-    // constraints
+    if((req.body.id != parseInt(req.body.id)) || (req.body.id.trim().length != 12))
+        res.send("Please enter a valid Aadhar ID")
+
+    userDB.checkID(req.body.id, function(data){
+        if(parseInt(data))
+            res.send("Aadhar number already exists")
+    })
+
+    // Add check for username, password, DOB, email, contact
+    
     if(fName.trim().length<3) res.send("Enter a valid first name")
     if(lName.trim().length<5) res.send("Enter a valid last name")
 
-    var userObject = 
+   
+   
+    var userObject =
     {
-        user_id : req.body.id,
-        username : req.body.username,
+        user_id : req.body.id, 
+        username : uName,
         password : req.body.password,
-        name : fName.trim() + lName.trim(),
+        name : fName + " " +lName,
         contact : req.body.contact,
-        alt_contact : req.body.alt_contact,
         DOB : req.body.DOB,
         address : req.body.address,
-        email : email,
-        gender :gender
+        email : req.body.email,
+        gender : gender
     }
 
-    console.log("Sending the request to database")
-   res.send("Called")
+    userDB.sign_up(userObject, function(msg){
+        res.send(msg)
+    })
     
 })
 

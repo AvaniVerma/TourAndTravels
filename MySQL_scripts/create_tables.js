@@ -11,11 +11,11 @@ const connection = mysql.createConnection({
 // create table users
 connection.query(
     `CREATE TABLE IF NOT EXISTS user (
-        user_id INTEGER PRIMARY KEY, 
+        user_id VARCHAR(12) PRIMARY KEY, 
         username VARCHAR(15) UNIQUE,
         password VARCHAR(20),
         name VARCHAR(100),
-        contact INTEGER(10),
+        contact VARCHAR(10),
         DOB VARCHAR(50),
         address VARCHAR(100),
         email VARCHAR(30),
@@ -87,8 +87,3 @@ connection.query(
         else console.log("Table travel mode created successfully ! ")
     }
 )
-
-
-module.exports = {
-    connection: connection
-}
