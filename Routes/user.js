@@ -1,5 +1,6 @@
 const express = require('express');
 const route = express.Router();
+const userDB = require('../database/user')
 
 //Trip details
 var today=new Date();
@@ -19,6 +20,7 @@ route.post('/login', function(req,res){
 
     //if username is not found in user DB, flash error message
     //if username and password do not match, flash error message
+
 
 })
 
@@ -42,18 +44,28 @@ route.post('/signUp',function(req,res){
             break
         case 4 : gender = "Would rather not say"
     }
-    var role = "user";
-
-    
-    
 
     // Use flash messages to display error
     // constraints
-    if(fName.trim()<3) res.send("Enter a valid first name")
-    if(lName.trim()<5) res.send("Enter a valid last name")
+    if(fName.trim().length<3) res.send("Enter a valid first name")
+    if(lName.trim().length<5) res.send("Enter a valid last name")
 
+    var userObject = 
+    {
+        user_id : req.body.id,
+        username : req.body.username,
+        password : req.body.password,
+        name : fName.trim() + lName.trim(),
+        contact : req.body.contact,
+        alt_contact : req.body.alt_contact,
+        DOB : req.body.DOB,
+        address : req.body.address,
+        email : email,
+        gender :gender
+    }
 
-
+    console.log("Sending the request to database")
+   res.send("Called")
     
 })
 
@@ -65,8 +77,7 @@ route.post('/booking', function (req, res) {
     Trip.source = req.body.src
     Trip.destination = req.body.dest
     Trip.duration = req.body.days
-    Trip.package = req.body.package
-
+    Trip.start_date = req.parse.start_date
     switch(parseInt(req.body.travelVia))
     {
         case 1: Trip.travelMode="Airplane"
@@ -79,9 +90,21 @@ route.post('/booking', function (req, res) {
     if(Trip.duration<4)
         res.send("Trip must be longer than 3 days.")
 
+    if(Trip.duration>15)
+        res.send("We support trips of maximum 15 days. ")
+    
+    Trip.return_date=  new Date(new Date().setDate(Trip.start_date + duration))
+
     // Check entered date is atleast 2 days later than current
+    if(Trip.start_date == Today)
+        res.send("Sorry, we cannot plan the tour with start date as today.")
+
+    // Last date to get reimbursement
+    Trip.reimbursement_dat=  new Date(new Date().setDate(Trip.start_date - 2))
 
     res.send("Got the request")
+
+    //Render page for payment
 })
 
 
@@ -100,9 +123,9 @@ route.post('/payment', function(req,res){
     if((payment.card_no != parseInt(payment.card_no)) || (payment.card_no.toString().trim().length != 16 ))
         res.send("Enter a valid card number")
 
-    payment.cvc_no=req.body.cvc_no
-    if((payment.cvc_no != parseInt(payment.cvc_no)) || (payment.cvc_no.toString().trim().length != 3))
-        res.send("Enter valid cvc number")
+    payment.cvc_no=req.body.cvv_no
+    if((payment.cvv_no != parseInt(payment.cvv_no)) || (payment.cvv_no.AtoString().trim().length != 3))
+        res.send("Enter valid cvv number")
 
     res.send("Amount paid successfully")
 })
@@ -113,6 +136,12 @@ route.post('/payment', function(req,res){
 
 //Show list of previously booked trips
 route.get('/bookingHistory', function (req,res){
+    // Use expandable cards
+    
+})
+
+route.get('/deleteBooking', function(req,res){
+    res.send("I am in delete booking route")
 })
 
 // Add sessions and sign out option  
