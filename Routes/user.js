@@ -173,8 +173,6 @@ route.post('/payment', function(req,res){
 
 
 
-
-
 //Show list of previously booked trips
 route.get('/bookingHistory', function (req,res){
     // Use expandable cards
@@ -182,7 +180,15 @@ route.get('/bookingHistory', function (req,res){
 })
 
 route.get('/deleteBooking', function(req,res){
-    res.send("I am in delete booking route")
+    // Check if the booking exists or not
+   
+    bookingDB.delete_booking({
+        username : username,
+        start_date : req.body.start
+    }, function(data){
+        if(data) res.end("Deleted successfully !")
+        else res.end("An error occured. Please try again.")
+    })
 })
 
 // Add sessions and sign out option  

@@ -1,8 +1,3 @@
-// Add functions to
-// Insert a booking
-// Delete a booking
-// Fetch history
-
 const mysql = require('mysql2')
 const Connection = mysql.createConnection({
     host : 'localhost',
@@ -26,6 +21,30 @@ function add_booking(trip,cb)
     )
 }
 
-module.exports={
-    add_booking
+
+// Add a function to check if a booking exists or not
+
+// Delete booking
+function delete_booking(trip, cb)
+{
+    Connection.query(
+        'DELETE FROM booking WHERE username ="' + trip.username + '" AND start_date="'+trip.start_date+'"',
+        function(err,rows)
+        {
+             if(!err) cb(1)
+             else cb(0)
+        }
+    )
 }
+
+
+
+
+
+// Fetch history
+
+
+module.exports={
+    add_booking,
+    delete_booking
+};
