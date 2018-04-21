@@ -19,8 +19,16 @@ route.post('/login', function(req,res){
     var password = req.body.password
 
     //if username is not found in user DB, flash error message
+    userDB.checkUsername(req.body.username,function(data){
+        if(data === 0)
+            res.end("Username not found.")
+    })
+        
     //if username and password do not match, flash error message
-
+    userDB.matchUsernamePassword(username, password, function(data){
+        if(!data) res.end("Username or password is incorrect")
+        else res.end("Logged in successfully !")
+    })
 
 })
 

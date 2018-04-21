@@ -34,7 +34,9 @@ function checkID(id, cb)
         `SELECT * FROM user WHERE user_id = ` + id, 
         function(err, rows)
         {
-            cb(rows.length)
+            if(err) cb(0)
+            else cb(rows.length)
+            Connection.close()
         }
     )
 }
@@ -47,7 +49,23 @@ function checkUsername(username, cb)
         ' SELECT * FROM user WHERE username = "' + username +'" ' , 
         function(err, rows)
         {
-            cb(rows.length)
+            if(err) cb(0)
+            else cb(rows.length)
+            Connection.close()
+        }
+    )
+}
+
+// Match username and password
+function matchUsernamePassword(name,pass, cb)
+{
+    Connection.query(
+        ' SELECT * FROM user WHERE username = "' + name +'" AND password = "' + pass +'"' , 
+        function(err, rows)
+        {
+            if(err) cb(0)
+            else cb(rows.length)
+            Connection.close()
         }
     )
 }
@@ -55,5 +73,6 @@ function checkUsername(username, cb)
 module.exports = {
     sign_up,
     checkID,
-    checkUsername
+    checkUsername,
+    matchUsernamePassword
 }
