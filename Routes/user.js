@@ -33,6 +33,24 @@ route.post('/signUp',function(req,res){
     var lName = req.body.last_name
     var email = req.body.email
     var gender;
+
+    // Constraints
+    if((req.body.id != parseInt(req.body.id)) || (req.body.id.trim().length != 12))
+        res.end("Please enter a valid Aadhar ID")
+
+    if(fName.trim().length<3) res.send("Enter a valid first name")
+    if(lName.trim().length<4) res.send("Enter a valid last name")
+
+    if(uName.trim().length<5) res.end("Username must contain atleast 5 characters")
+    if(req.body.password.trim().length<8) res.end("Password must contain atleast 8 characters")
+
+    if(email.split("@")[0].length<5)
+        res.end("Please enter a valid email")
+
+    if((req.body.contact != parseInt(req.body.contact)) || (req.body.contact.toString().trim().length != 10))
+        res.end("Please enter a valid mobile number ! ")
+
+
     switch( parseInt(req.body.gender.toString().trim()) )
     {
         case 1 : gender = "Male"
@@ -44,21 +62,18 @@ route.post('/signUp',function(req,res){
         case 4 : gender = "Would rather not say"
     }
 
-    if((req.body.id != parseInt(req.body.id)) || (req.body.id.trim().length != 12))
-        res.send("Please enter a valid Aadhar ID")
-
-    userDB.checkID(req.body.id, function(data){
-        if(parseInt(data))
-            res.send("Aadhar number already exists")
+    // Check if Aadhar ID is unique
+    userDB.checkID(req.body.id,function(data){
+        if(data)
+            res.end("Aadhar number already exists")
     })
 
-    // Add check for username, password, DOB, email, contact
-    
-    if(fName.trim().length<3) res.send("Enter a valid first name")
-    if(lName.trim().length<5) res.send("Enter a valid last name")
+    // Check if username is unique 
+    userDB.checkUsername(req.body.username,function(data){
+        if(data)
+            res.end("Username already exists.Try a different one.")
+    })
 
-   
-   
     var userObject =
     {
         user_id : req.body.id, 
@@ -73,7 +88,8 @@ route.post('/signUp',function(req,res){
     }
 
     userDB.sign_up(userObject, function(msg){
-        res.send(msg)
+        if(msg.success) res.end("Added successfully ! ")
+        else res.end("OOPS ! An error occured. Please try again.")
     })
     
 })
@@ -133,7 +149,7 @@ route.post('/payment', function(req,res){
         res.send("Enter a valid card number")
 
     payment.cvc_no=req.body.cvv_no
-    if((payment.cvv_no != parseInt(payment.cvv_no)) || (payment.cvv_no.AtoString().trim().length != 3))
+    if((payment.cvv_no != parseInt(payment.cvv_no)) || (payment.cvv_no.toString().trim().length != 3))
         res.send("Enter valid cvv number")
 
     res.send("Amount paid successfully")
