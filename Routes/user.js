@@ -1,21 +1,13 @@
 const express = require('express');
 const route = express.Router();
 const userDB = require('../MySQL_scripts/user')
+const bookingDB = require('../MySQL_scripts/booking')
 
-//Trip details
-var today=new Date();
-var Trip={  day : {
-                    date: today.getDate(),
-                    month: 1+today.getMonth(),
-                    year: today.getFullYear()
-}};
-
-var payment={}
-
+var username;
 
 //LoginDetails
 route.post('/login', function(req,res){
-    var username = req.body.username
+    username = req.body.username
     var password = req.body.password
 
     //if username is not found in user DB, flash error message
@@ -28,6 +20,8 @@ route.post('/login', function(req,res){
     userDB.matchUsernamePassword(username, password, function(data){
         if(!data) res.end("Username or password is incorrect")
         else res.end("Logged in successfully !")
+
+        // Save username in localstorage
     })
 
 })
@@ -99,6 +93,9 @@ route.post('/signUp',function(req,res){
         if(msg.success) res.end("Added successfully ! ")
         else res.end("OOPS ! An error occured. Please try again.")
     })
+
+    // Add function to automatically login after signup
+    // and save username in local storage
     
 })
 
@@ -107,10 +104,15 @@ route.post('/signUp',function(req,res){
 
 // Add new booking details
 route.post('/booking', function (req, res) {
+    var Trip = {};
+    
     Trip.source = req.body.src
     Trip.destination = req.body.dest
     Trip.duration = req.body.days
-    Trip.start_date = req.parse.start_date
+    Trip.username = username
+    Trip.start_date = req.body.start_date
+    // Put price calculation according to distance
+    Trip.price = 3000
     switch(parseInt(req.body.travelVia))
     {
         case 1: Trip.travelMode="Airplane"
@@ -126,16 +128,22 @@ route.post('/booking', function (req, res) {
     if(Trip.duration>15)
         res.send("We support trips of maximum 15 days. ")
     
-    Trip.return_date=  new Date(new Date().setDate(Trip.start_date + duration))
+    Trip.return_date=  new Date(new Date().setDate(Trip.start_date + Trip.duration))
 
     // Check entered date is atleast 2 days later than current
-    if(Trip.start_date == Today)
+    if(Trip.start_date == new Date())
         res.send("Sorry, we cannot plan the tour with start date as today.")
 
     // Last date to get reimbursement
-    Trip.reimbursement_dat=  new Date(new Date().setDate(Trip.start_date - 2))
+    Trip.reimbursement_date=  new Date(new Date().setDate(Trip.start_date - 2))
 
-    res.send("Got the request")
+
+    // Add a constraint to check that new start_date is after the last end_date
+    bookingDB.add_booking(Trip, function(data){
+        if(data === null)  res.end("An error occured while booking your trip. Please try again !")
+        else res.end("Trip booked successfully !")
+    })
+    
 
     //Render page for payment
 })

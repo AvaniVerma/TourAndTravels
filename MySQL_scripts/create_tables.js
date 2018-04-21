@@ -53,14 +53,14 @@ connection.query(
 // Create table Booking
 connection.query(
     `create table if not exists booking(
-        booking_id INTEGER AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(15),
         source VARCHAR(25) ,
         destination VARCHAR(25),
         duration INTEGER(2),
-        start_date DATE,
-        return_date DATE,
-        price INTEGER
+        start_date VARCHAR(50),
+        return_date VARCHAR(50),
+        price INTEGER,
+        PRIMARY KEY (username, start_date)
     )`,
     function(err, results)
     {
@@ -73,13 +73,14 @@ connection.query(
 // Create table travel mode
 connection.query(
     `create table if not exists travel_mode(
-        booking_id INTEGER ,
+        username VARCHAR(15),
+        start_date VARCHAR(50),
         mode VARCHAR(10),
         mode_no INTEGER,
         travel_class VARCHAR(20),
         start_station VARCHAR(25),
         end_station VARCHAR(25),
-        FOREIGN KEY (booking_id) references booking(booking_id)
+        FOREIGN KEY (username, start_date) references booking(username, start_date )
     )`,
     function(err, results)
     {

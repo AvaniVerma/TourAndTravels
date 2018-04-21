@@ -13,6 +13,6 @@ app.use('/user', userRoute)
 app.use('/employee', employeeRoute)
 
 // Server Running
-app.listen(3000, function(req,res,next){
+app.listen(3000, function(req,res){
     console.log("Server up and running")
 })
