@@ -1,25 +1,30 @@
 const route = require('express').Router()
+const empDB = require('../MySQL_scripts/user')
 
 //Employee login
 route.post('/login', function(req,res){
-    var uName = req.body.username
+    var eName = req.body.username
     var password = req.body.password
 
-    if(uName.trim().length < 1 )
-        res.send("Please enter a valid username.")
+
+    // Constraints
+    if(eName.trim().length < 5 )
+        res.end("Please enter a valid username.")
 
     if(password.trim().length < 8)
-        res.send("Please enter a valid password")
+        res.end("Please enter a valid password")
 
     // check if UName exists in employee table
+    empDB.checkUsername(eName,function(data){
+        if(data === 0)
+            res.end("Username not found in db.")
+    })
+
     // check password and username are correct
-
-    console.log(uName)
-    console.log(password)
-
-    //res.send("Got your details")
-    display(uName)
-    res.send("Got your details")
+    empDB.matchUsernamePassword(eName, password, function(data){
+        if(!data) res.end("Username or password is incorrect")
+        else res.end("Logged in successfully !")
+    })
 })
 
 module.exports = route

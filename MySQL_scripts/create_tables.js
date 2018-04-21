@@ -32,11 +32,11 @@ connection.query(
 // create table employee
 connection.query(
     `CREATE TABLE IF NOT EXISTS employee (
-        employee_id INTEGER PRIMARY KEY,
+        employee_id VARCHAR(12) PRIMARY KEY,
         username VARCHAR(15) UNIQUE,
         password VARCHAR(20),
         name VARCHAR(100),
-        contact INTEGER(10),
+        contact VARCHAR(10),
         DOB VARCHAR(50),
         address VARCHAR(100),
         email VARCHAR(30),
