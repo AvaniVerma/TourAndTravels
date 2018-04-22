@@ -21,7 +21,6 @@ function sign_up(newUser, cb)
         {
             if(err) cb({ success : false })
             else cb({success : true})
-            Connection.close()
         }
     )
 }
@@ -36,7 +35,7 @@ function checkID(id, cb)
         {
             if(err) cb(0)
             else cb(rows.length)
-            Connection.close()
+            
         }
     )
 }
@@ -51,7 +50,6 @@ function checkUsername(username, cb)
         {
             if(err) cb(0)
             else cb(rows.length)
-            Connection.close()
         }
     )
 }

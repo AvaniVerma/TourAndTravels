@@ -4,9 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Tours and Travels</title>
+    <script src="jquery.js"></script>
+    <script src="index.js"></script>
 </head>
+
+
 <body>
-    here
+    <h1 style="text-align:center">Tours and Travels</h1>
+    <br>
+    <div style="display:flex; justify-content:center">
+
+        <!-- User login and SignUp -->
+        <div style="width:40%; margin:5%; ">
+            <h2 style="text-align:center">USERS</h2>
+
+            
+                <input type="text" id="username" placeholder="Username" style="width:90%; padding:1% 5%;">
+                <br> <br>
+                <input type="password" id="password" placeholder="Password" style="width:90%; padding:1% 5%;">
+                <br><br>
+                <button style="width:100%; padding:1% 5%;" id="UserLoginFormButton">Log In</button>
+                
+            
+            <br>
+            New user? <a href="./signUp.html">Sign up</a>
+
+
+        </div>
+        
+        <!-- Employee Login -->
+        <div style="width:40%; margin:5%;">
+            <h2 style="text-align:center">EMPLOYEE</h2>
+
+            <form action="/employee/login" method="POST">
+                <input type="text" name="ename" placeholder="Username" style="width:90%; padding:1% 5%;">
+                <br> <br>
+                <input type="password" name="epassword" placeholder="password" style="width:90%; padding:1% 5%;">
+                <br><br>
+                <button style="width:100%; padding:1% 5%;">Log In</button>
+            </form>
+
+        </div>
+    </div>
 </body>
 </html>

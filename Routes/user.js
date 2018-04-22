@@ -3,12 +3,18 @@ const route = express.Router();
 const userDB = require('../MySQL_scripts/user')
 const bookingDB = require('../MySQL_scripts/booking')
 
-var username;
+var username="";
 
 //LoginDetails
 route.post('/login', function(req,res){
     username = req.body.username
     var password = req.body.password
+
+    if(username.trim().length < 5)
+        res.end("Please enter a valid username.")
+
+    if(password.trim().length < 8)
+        res.end("Please enter a valid password.")
 
     //if username is not found in user DB, flash error message
     userDB.checkUsername(req.body.username,function(data){
@@ -34,12 +40,9 @@ route.post('/signUp',function(req,res){
     var fName = req.body.first_name
     var lName = req.body.last_name
     var email = req.body.email
-    var gender;
+    var gender = req.body.gender;
 
     // Constraints
-    if((req.body.id != parseInt(req.body.id)) || (req.body.id.trim().length != 12))
-        res.end("Please enter a valid Aadhar ID")
-
     if(fName.trim().length<3) res.send("Enter a valid first name")
     if(lName.trim().length<4) res.send("Enter a valid last name")
 
@@ -51,18 +54,15 @@ route.post('/signUp',function(req,res){
 
     if((req.body.contact != parseInt(req.body.contact)) || (req.body.contact.toString().trim().length != 10))
         res.end("Please enter a valid mobile number ! ")
+    
+    if((req.body.id != parseInt(req.body.id)) || (req.body.id.trim().length != 12))
+        res.end("Please enter a valid Aadhar ID")
 
-
-    switch( parseInt(req.body.gender.toString().trim()) )
-    {
-        case 1 : gender = "Male"
-            break
-        case 2 : gender = "Female"
-            break
-        case 3 : gender = "Other"
-            break
-        case 4 : gender = "Would rather not say"
-    }
+       // Check if username is unique 
+       userDB.checkUsername(req.body.username,function(data){
+        if(data)
+            res.end("Username already exists.Try a different one.")
+    })
 
     // Check if Aadhar ID is unique
     userDB.checkID(req.body.id,function(data){
@@ -70,12 +70,7 @@ route.post('/signUp',function(req,res){
             res.end("Aadhar number already exists")
     })
 
-    // Check if username is unique 
-    userDB.checkUsername(req.body.username,function(data){
-        if(data)
-            res.end("Username already exists.Try a different one.")
-    })
-
+ 
     var userObject =
     {
         user_id : req.body.id, 
@@ -83,11 +78,12 @@ route.post('/signUp',function(req,res){
         password : req.body.password,
         name : fName + " " +lName,
         contact : req.body.contact,
-        DOB : req.body.DOB,
-        address : req.body.address,
+        // DOB : req.body.DOB,
+        // address : req.body.address,
         email : req.body.email,
         gender : gender
     }
+
 
     userDB.sign_up(userObject, function(msg){
         if(msg.success) res.end("Added successfully ! ")
