@@ -38,13 +38,19 @@ function delete_booking(trip, cb)
 }
 
 
-
-
-
 // Fetch history
+function fetch_history(username, cb)
+{
+    Connection.query("SELECT * FROM booking where username='"+username+"'", function(err, rows){
+        cb(rows)
+    })
+
+}
+
 
 
 module.exports={
     add_booking,
-    delete_booking
+    delete_booking,
+    fetch_history
 };

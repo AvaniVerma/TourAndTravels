@@ -174,8 +174,13 @@ route.post('/payment', function(req,res){
 
 
 //Show list of previously booked trips
-route.get('/bookingHistory', function (req,res){
-    // Use expandable cards
+route.post('/bookingHistory', function (req,res){
+    
+    bookingDB.fetch_history(username, function(data){
+        if(data.length === 0) res.send("No records found.")
+        else res.send(data)
+    })
+
     
 })
 
