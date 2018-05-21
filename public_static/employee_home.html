@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+
+<style>
+    .header
+    {
+        z-index: 300; 
+        background-color: #fafafa;
+        padding: 10px;
+        border-bottom : 1px solid #ebebeb;
+    }
+
+    .mlogo
+    {
+        font-weight: 600;
+        display: inline-block;
+        margin: 20px;
+        padding: 5px 10px;
+        font-size:2em;
+        line-height: 1.5px;
+        letter-spacing: 2px;
+        color: #666;
+    }
+
+    .signOut, .Name
+    {
+        margin-right: 15px;
+        margin-top: 15px;
+        font-size:1;
+        float: right;
+        cursor: pointer;
+        color:#666;
+    }
+
+    .tripCard
+    {
+        width:300px;
+        padding: 10px;
+        margin: 20px;
+        border-radius: 15px;
+        display: inline-block;
+        box-shadow: 0 0 2px #888;
+    }
+
+    .tripCard:hover
+    {
+        box-shadow: 0 0 5px #999;
+    }
+
+    .user,details
+    {
+        width: 280px;
+        height: 280px;
+        margin: 10px;
+        border-radius: 15px;
+    }
+</style>
+
+<body style="margin:0;">
+
+    
+    <!-- ===== Header ===== -->
+    <header class="header">
+        <a class="mlogo" style="cursor: pointer;">TourAndTravels</a>
+        <a class="signOut">Sign Out</a>
+        <a class="Name"> Employee name </a>
+    </header>
+
+    <div style="margin:15px 30px; ">
+        Hello <span id="emp_name">emplyoee</span>, the following upcoming trips have been assigned to you.
+    </div>
+
+    <!-- Users they are managing and the details of their trip -->
+
+    <div style="text-align:center">
+        
+    
+        <div class="tripCard">
+            <h3>Username</h3>
+            <div class="user">
+                <img src="./cat.jpg" style="width:280px;">
+            </div>
+            <div class="details">
+                <span>Booking ID : </span><i>1234</i> <br>
+                <span>source <i>to</i> Destination</span> <br>
+                <span>Days of tour :  <i>44</i></span> <br>
+                <span>Contact Info : <i>1342567890</i> </span>
+            </div>
+        </div>      
+        
+
+        <div class="tripCard">
+                <h3>Username</h3>
+                <div class="user">
+                    <img src="./dragon.png" style="width:280px;">
+                </div>
+                <div class="details">
+                    <span>Booking ID : </span><i>1234</i> <br>
+                    <span>source <i>to</i> Destination</span> <br>
+                    <span>Days of tour :  <i>44</i></span> <br>
+                    <span>Contact Info : <i>1342567890</i> </span>
+                </div>
+            </div>  
+
+
+        <div class="tripCard">
+            <h3>Username</h3>
+            <div class="user">
+                <img src="./v-15-512.png" style="width:280px;">
+            </div>
+            <div class="details">
+                <span>Booking ID : </span><i>1234</i> <br>
+                <span>source <i>to</i> Destination</span> <br>
+                <span>Days of tour :  <i>44</i></span> <br>
+                <span>Contact Info : <i>1342567890</i> </span>
+            </div>
+        </div>
+
+        <div class="tripCard">
+            <h3>Username</h3>
+            <div class="user">
+                    <img src="./koala.png" style="width:280px;">
+            </div>
+            <div class="details">
+                <span>Booking ID : </span><i>1234</i> <br>
+                <span>source <i>to</i> Destination</span> <br>
+                <span>Days of tour :  <i>44</i></span> <br>
+                <span>Contact Info : <i>1342567890</i> </span>
+            </div>
+        </div>
+
+
+        <div class="tripCard">
+            <h3>Username</h3>
+            <div class="user">
+                <img src="./ghost.png" style="width:280px;">
+            </div>
+            <div class="details">
+                <span>Booking ID : </span><i>1234</i> <br>
+                <span>source <i>to</i> Destination</span> <br>
+                <span>Days of tour :  <i>44</i></span> <br>
+                <span>Contact Info : <i>1342567890</i> </span>
+            </div>
+        </div>       
+    </div>
+
+</body>
+
+
+</html>
